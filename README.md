@@ -20,6 +20,8 @@ pemilik dari key.
 
 - Alamat dasar: `https://okr.tumbleryukoperasional.shop`
 - Autentikasi setiap permintaan: `Authorization: Bearer <KEY_PRIBADI_STAF>`
+- Identitas client wajib jelas: `User-Agent: TumblerYuk-OKR-Agent/1.0` (atau nama agent lain
+  yang jelas). Jangan biarkan nilai bawaan `Python-urllib`, karena pagar web menolaknya `403`.
 - Key adalah rahasia pribadi. Jangan tempelkan ke chat, prompt tersimpan, repo, log, screenshot,
   atau link. Simpan di secret store/variabel lingkungan milik agent.
 - Jangan pernah memakai key rekan kerja untuk "menguji" akses.
@@ -30,6 +32,7 @@ Contoh membaca milik sendiri:
 GET /api/okr/saya HTTP/1.1
 Host: okr.tumbleryukoperasional.shop
 Authorization: Bearer <KEY_PRIBADI_STAF>
+User-Agent: TumblerYuk-OKR-Agent/1.0
 Accept: application/json
 ```
 
@@ -38,6 +41,7 @@ Contoh mengirim ada di [`contoh-ajuan.json`](contoh-ajuan.json). Saat mengirim, 
 ```http
 POST /api/okr/ajuan HTTP/1.1
 Authorization: Bearer <KEY_PRIBADI_STAF>
+User-Agent: TumblerYuk-OKR-Agent/1.0
 Content-Type: application/json
 Idempotency-Key: <UUID_YANG_DIBUAT_SEKALI_UNTUK_PENGAJUAN_INI>
 ```
