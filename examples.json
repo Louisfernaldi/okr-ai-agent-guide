@@ -5,6 +5,7 @@
       "path": "/api/okr/saya",
       "headers": {
         "Authorization": "Bearer <KEY_PRIBADI_STAF>",
+        "User-Agent": "TumblerYuk-OKR-Agent/1.0",
         "Accept": "application/json"
       }
     },
@@ -46,6 +47,7 @@
       "path": "/api/okr/ajuan",
       "headers": {
         "Authorization": "Bearer <KEY_PRIBADI_STAF>",
+        "User-Agent": "TumblerYuk-OKR-Agent/1.0",
         "Content-Type": "application/json",
         "Idempotency-Key": "550e8400-e29b-41d4-a716-446655440000"
       },
