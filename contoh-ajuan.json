@@ -1,0 +1,30 @@
+{
+  "klaim": "Saya akan membuat papan pesanan otomatis agar Rina tidak menyalin pesanan setiap pagi.",
+  "jejak": "Papan Pesanan WA, riwayat chat WA di sistem resmi",
+  "cara_baca": "Setiap Senin buka Papan Pesanan WA, pilih pesanan tujuh hari sebelumnya, hitung pesanan yang masih disalin manual, lalu bagi dengan seluruh pesanan WA pada minggu yang sama.",
+  "ambang": "20",
+  "satuan": "persen pesanan manual",
+  "jendela_mulai": "2026-08-01",
+  "jendela_selesai": "2026-10-31",
+  "jendela_min_data": "10",
+  "dipakein_siapa": "Rina dan Dwi",
+  "merah_kondisi": "Merah jika masih di atas 40 persen pada akhir Oktober.",
+  "penjaga_nama": "pesanan yang salah masuk papan per minggu",
+  "penjaga_ambang": "2",
+  "baseline": [
+    {"tanggal_mulai": "2026-06-01", "angka": "78"},
+    {"tanggal_mulai": "2026-06-08", "angka": "74"},
+    {"tanggal_mulai": "2026-06-15", "angka": "69"},
+    {"tanggal_mulai": "2026-06-22", "angka": "81"},
+    {"tanggal_mulai": "2026-06-29", "angka": "66"},
+    {"tanggal_mulai": "2026-07-06", "angka": "70"}
+  ],
+  "langkah": [
+    {
+      "judul": "Buat papan pesanan otomatis",
+      "bobot": "100",
+      "repo": "ORGANISASI/REPO-CONTOH",
+      "kata_kunci": "papan-pesanan-otomatis"
+    }
+  ]
+}
