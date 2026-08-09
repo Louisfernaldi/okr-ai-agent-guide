@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "OKR TumblerYuk Agent API",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "API sempit untuk AI agent staf: membaca OKR pemilik key dan mengajukan target baru milik pemilik key. Tidak ada akses admin atau lintas-orang."
   },
   "servers": [
@@ -15,6 +15,7 @@
         "operationId": "getMyOkr",
         "summary": "Baca OKR milik pemegang key",
         "description": "Identitas selalu berasal dari key. Query string orang_id, hp, atau nama tidak mengubah pemilik.",
+        "parameters": [{"$ref": "#/components/parameters/AgentUserAgent"}],
         "responses": {
           "200": {
             "description": "Data pemilik key saja",
@@ -31,6 +32,7 @@
         "summary": "Ajukan target baru milik pemegang key",
         "description": "Operasi tulis. AI agent wajib memperoleh persetujuan jelas dari pemilik key tepat sebelum memanggil operasi ini.",
         "parameters": [
+          {"$ref": "#/components/parameters/AgentUserAgent"},
           {
             "name": "Idempotency-Key",
             "in": "header",
@@ -64,6 +66,16 @@
     }
   },
   "components": {
+    "parameters": {
+      "AgentUserAgent": {
+        "name": "User-Agent",
+        "in": "header",
+        "required": true,
+        "description": "Nama client yang jelas. Gunakan TumblerYuk-OKR-Agent/1.0 atau nama agent lain; nilai bawaan Python-urllib ditolak pagar web dengan 403.",
+        "schema": {"type": "string", "minLength": 3, "maxLength": 128},
+        "example": "TumblerYuk-OKR-Agent/1.0"
+      }
+    },
     "securitySchemes": {
       "staffBearer": {"type": "http", "scheme": "bearer", "bearerFormat": "OKR staff key"}
     },
