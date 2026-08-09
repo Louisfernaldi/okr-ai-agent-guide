@@ -1,0 +1,60 @@
+{
+  "get_my_okr": {
+    "request": {
+      "method": "GET",
+      "path": "/api/okr/saya",
+      "headers": {
+        "Authorization": "Bearer <KEY_PRIBADI_STAF>",
+        "Accept": "application/json"
+      }
+    },
+    "response_200": {
+      "ok": true,
+      "pemilik": {"nama": "Staf Contoh"},
+      "ajuan": [
+        {
+          "id": 123,
+          "kuartal": "2026-Q3",
+          "status": "layak",
+          "ronde": 1,
+          "dibuat_wib": "2026-08-09T10:30:00",
+          "klaim": "Contoh klaim target yang dimiliki staf pemegang key.",
+          "cara_baca": "Contoh cara membaca ukuran yang dapat dihitung ulang dari sistem resmi.",
+          "ambang": 20,
+          "satuan": "persen",
+          "jendela_mulai": "2026-08-01",
+          "jendela_selesai": "2026-10-31",
+          "tingkat": 2,
+          "nilai_vonis_persen": 85,
+          "kemajuan_pengerjaan_persen": 100,
+          "langkah": [
+            {
+              "id": 456,
+              "judul": "Buat papan otomatis",
+              "bobot": 100,
+              "status": "jalan",
+              "pr": {"repo": "ORGANISASI/REPO-CONTOH", "nomor": 77, "status": "merged"}
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "submit_my_okr_proposal": {
+    "request": {
+      "method": "POST",
+      "path": "/api/okr/ajuan",
+      "headers": {
+        "Authorization": "Bearer <KEY_PRIBADI_STAF>",
+        "Content-Type": "application/json",
+        "Idempotency-Key": "550e8400-e29b-41d4-a716-446655440000"
+      },
+      "body_file": "./contoh-ajuan.json"
+    },
+    "response_201": {"ok": true, "ajuan_id": 123},
+    "response_400": {"ok": false, "penolakan": ["contoh alasan isian ditolak"]},
+    "response_401": {"ok": false, "pesan": "kunci ga sah"},
+    "response_409": {"ok": false, "pesan": "nomor permintaan sudah dipakai untuk isi berbeda"},
+    "response_500": {"ok": false, "pesan": "gagal simpan"}
+  }
+}
