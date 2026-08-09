@@ -1,6 +1,6 @@
 {
   "name": "OKR TumblerYuk AI Agent Guide",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "language": "id-ID",
   "base_url": "https://okr.tumbleryukoperasional.shop",
   "openapi": "./openapi.json",
@@ -14,6 +14,9 @@
       "never_store_in_prompt_or_log",
       "never_use_another_staff_key"
     ]
+  },
+  "required_headers": {
+    "User-Agent": "TumblerYuk-OKR-Agent/1.0"
   },
   "operations": [
     {
