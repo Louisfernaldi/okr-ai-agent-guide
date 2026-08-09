@@ -1,0 +1,209 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OKR TumblerYuk Agent API",
+    "version": "1.0.0",
+    "description": "API sempit untuk AI agent staf: membaca OKR pemilik key dan mengajukan target baru milik pemilik key. Tidak ada akses admin atau lintas-orang."
+  },
+  "servers": [
+    {"url": "https://okr.tumbleryukoperasional.shop"}
+  ],
+  "security": [{"staffBearer": []}],
+  "paths": {
+    "/api/okr/saya": {
+      "get": {
+        "operationId": "getMyOkr",
+        "summary": "Baca OKR milik pemegang key",
+        "description": "Identitas selalu berasal dari key. Query string orang_id, hp, atau nama tidak mengubah pemilik.",
+        "responses": {
+          "200": {
+            "description": "Data pemilik key saja",
+            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/MyOkrResponse"}}}
+          },
+          "401": {"$ref": "#/components/responses/Unauthorized"},
+          "500": {"$ref": "#/components/responses/ServerError"}
+        }
+      }
+    },
+    "/api/okr/ajuan": {
+      "post": {
+        "operationId": "submitMyOkrProposal",
+        "summary": "Ajukan target baru milik pemegang key",
+        "description": "Operasi tulis. AI agent wajib memperoleh persetujuan jelas dari pemilik key tepat sebelum memanggil operasi ini.",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "8-128 karakter ASCII. Buat sekali per pengajuan dan gunakan nilai yang sama untuk setiap retry dengan badan yang sama.",
+            "schema": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$"},
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Proposal"}}}
+        },
+        "responses": {
+          "201": {
+            "description": "Tersimpan atau replay sukses dari nomor permintaan yang sama",
+            "headers": {
+              "Idempotent-Replayed": {
+                "description": "true bila respons berasal dari permintaan sukses sebelumnya",
+                "schema": {"type": "string", "enum": ["true"]}
+              }
+            },
+            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CreatedResponse"}}}
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "401": {"$ref": "#/components/responses/Unauthorized"},
+          "409": {"$ref": "#/components/responses/Conflict"},
+          "500": {"$ref": "#/components/responses/ServerError"}
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "staffBearer": {"type": "http", "scheme": "bearer", "bearerFormat": "OKR staff key"}
+    },
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "required": ["ok"],
+        "properties": {
+          "ok": {"type": "boolean", "const": false},
+          "pesan": {"type": "string"},
+          "penolakan": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      },
+      "Baseline": {
+        "type": "object",
+        "required": ["tanggal_mulai", "angka"],
+        "properties": {
+          "tanggal_mulai": {"type": "string", "format": "date"},
+          "angka": {"type": "string", "pattern": "^[+-]?([0-9]+(\\.[0-9]*)?|\\.[0-9]+)$"}
+        },
+        "additionalProperties": false
+      },
+      "ProposalStep": {
+        "type": "object",
+        "required": ["judul"],
+        "properties": {
+          "judul": {"type": "string"},
+          "bobot": {"type": "string", "pattern": "^$|^[+]?(100(\\.0*)?|([1-9][0-9]?)(\\.[0-9]+)?)$"},
+          "repo": {"type": "string"},
+          "kata_kunci": {"type": "string"}
+        },
+        "additionalProperties": false
+      },
+      "Proposal": {
+        "type": "object",
+        "required": ["klaim", "jejak", "cara_baca", "ambang", "satuan", "jendela_mulai", "jendela_selesai", "jendela_min_data", "dipakein_siapa", "merah_kondisi", "penjaga_nama", "penjaga_ambang", "baseline"],
+        "properties": {
+          "klaim": {"type": "string", "minLength": 40},
+          "jejak": {"type": "string"},
+          "cara_baca": {"type": "string", "minLength": 120},
+          "ambang": {"type": "string", "pattern": "^[+-]?([0-9]+(\\.[0-9]*)?|\\.[0-9]+)$"},
+          "satuan": {"type": "string"},
+          "jendela_mulai": {"type": "string", "format": "date"},
+          "jendela_selesai": {"type": "string", "format": "date"},
+          "jendela_min_data": {"type": "string", "pattern": "^[1-9][0-9]*$", "maxLength": 10, "description": "Bilangan bulat positif, maksimum 2147483647."},
+          "dipakein_siapa": {"type": "string"},
+          "merah_kondisi": {"type": "string"},
+          "penjaga_nama": {"type": "string"},
+          "penjaga_ambang": {"type": "string", "pattern": "^[+-]?([0-9]+(\\.[0-9]*)?|\\.[0-9]+)$"},
+          "baseline": {"type": "array", "minItems": 6, "maxItems": 60, "items": {"$ref": "#/components/schemas/Baseline"}},
+          "langkah": {"type": "array", "maxItems": 50, "items": {"$ref": "#/components/schemas/ProposalStep"}}
+        },
+        "additionalProperties": false
+      },
+      "PullRequest": {
+        "type": ["object", "null"],
+        "properties": {
+          "repo": {"type": ["string", "null"]},
+          "nomor": {"type": ["integer", "null"]},
+          "status": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      },
+      "Step": {
+        "type": "object",
+        "required": ["id", "judul", "bobot", "status", "pr"],
+        "properties": {
+          "id": {"type": "integer"},
+          "judul": {"type": "string"},
+          "bobot": {"type": ["number", "null"]},
+          "status": {"type": "string"},
+          "pr": {"$ref": "#/components/schemas/PullRequest"}
+        },
+        "additionalProperties": false
+      },
+      "OkrItem": {
+        "type": "object",
+        "required": ["id", "kuartal", "status", "ronde", "dibuat_wib", "klaim", "cara_baca", "ambang", "satuan", "jendela_mulai", "jendela_selesai", "tingkat", "nilai_vonis_persen", "kemajuan_pengerjaan_persen", "langkah"],
+        "properties": {
+          "id": {"type": "integer"},
+          "kuartal": {"type": "string"},
+          "status": {"type": "string", "enum": ["baru", "layak", "layak_perbaikan", "belum_layak"]},
+          "ronde": {"type": "integer", "minimum": 1, "maximum": 2},
+          "dibuat_wib": {"type": ["string", "null"]},
+          "klaim": {"type": "string"},
+          "cara_baca": {"type": "string"},
+          "ambang": {"type": ["number", "null"]},
+          "satuan": {"type": "string"},
+          "jendela_mulai": {"type": ["string", "null"], "format": "date"},
+          "jendela_selesai": {"type": ["string", "null"], "format": "date"},
+          "tingkat": {"type": ["integer", "null"]},
+          "nilai_vonis_persen": {"type": ["number", "null"]},
+          "kemajuan_pengerjaan_persen": {"type": ["number", "null"]},
+          "langkah": {"type": "array", "items": {"$ref": "#/components/schemas/Step"}}
+        },
+        "additionalProperties": false
+      },
+      "MyOkrResponse": {
+        "type": "object",
+        "required": ["ok", "pemilik", "ajuan"],
+        "properties": {
+          "ok": {"type": "boolean", "const": true},
+          "pemilik": {
+            "type": "object",
+            "required": ["nama"],
+            "properties": {"nama": {"type": "string"}},
+            "additionalProperties": false
+          },
+          "ajuan": {"type": "array", "items": {"$ref": "#/components/schemas/OkrItem"}}
+        },
+        "additionalProperties": false
+      },
+      "CreatedResponse": {
+        "type": "object",
+        "required": ["ok", "ajuan_id"],
+        "properties": {
+          "ok": {"type": "boolean", "const": true},
+          "ajuan_id": {"type": "integer"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Isian atau header idempotensi salah",
+        "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ErrorResponse"}}}
+      },
+      "Unauthorized": {
+        "description": "Key kosong, salah, atau dicabut; alasan sengaja tidak dibedakan",
+        "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ErrorResponse"}}}
+      },
+      "Conflict": {
+        "description": "Bentrok idempotensi, permintaan berjalan, atau akun belum lengkap",
+        "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ErrorResponse"}}}
+      },
+      "ServerError": {
+        "description": "Kegagalan internal tanpa jejak rahasia",
+        "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ErrorResponse"}}}
+      }
+    }
+  }
+}
