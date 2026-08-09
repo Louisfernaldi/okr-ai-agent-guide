@@ -1,0 +1,50 @@
+{
+  "name": "OKR TumblerYuk AI Agent Guide",
+  "version": "1.0.0",
+  "language": "id-ID",
+  "base_url": "https://okr.tumbleryukoperasional.shop",
+  "openapi": "./openapi.json",
+  "examples": "./examples.json",
+  "authentication": {
+    "type": "http_bearer",
+    "header": "Authorization: Bearer <KEY_PRIBADI_STAF>",
+    "secret_rules": [
+      "never_print",
+      "never_commit",
+      "never_store_in_prompt_or_log",
+      "never_use_another_staff_key"
+    ]
+  },
+  "operations": [
+    {
+      "operation_id": "getMyOkr",
+      "method": "GET",
+      "path": "/api/okr/saya",
+      "scope": "authenticated_owner_only",
+      "user_approval_required": false
+    },
+    {
+      "operation_id": "submitMyOkrProposal",
+      "method": "POST",
+      "path": "/api/okr/ajuan",
+      "scope": "authenticated_owner_only",
+      "user_approval_required": true,
+      "approval_timing": "immediately_before_request",
+      "idempotency_header": "Idempotency-Key"
+    }
+  ],
+  "retry_policy": {
+    "retry_statuses": [500],
+    "same_body_required": true,
+    "same_idempotency_key_required": true,
+    "never_retry_401": true,
+    "never_generate_a_new_idempotency_key_for_a_retry": true
+  },
+  "forbidden": [
+    "read_another_person",
+    "put_identity_in_request_body_to_impersonate",
+    "open_or_automate_admin_console",
+    "submit_without_current_owner_approval",
+    "expose_phone_number_or_secret"
+  ]
+}
