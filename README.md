@@ -1,6 +1,19 @@
 # API OKR TumblerYuk untuk AI agent
 
-Berikan link halaman ini ke AI agent anggota tim. Kontrak lengkap yang bisa
+Halaman ini punya dua pembaca.
+
+**Kalau kamu anggota tim (Nur, Ida, Alda):** yang kamu butuhkan ada di folder
+[`ngajuin-target-okr/`](ngajuin-target-okr/). Buka
+[`ngajuin-target-okr/references/PANDUAN-NGAJUIN-OBJECTIVE-BUAT-TIM.md`](ngajuin-target-okr/references/PANDUAN-NGAJUIN-OBJECTIVE-BUAT-TIM.md)
+dulu untuk memahami isinya, lalu ikuti "Cara pasang, 3 langkah" di
+[`ngajuin-target-okr/SKILL.md`](ngajuin-target-okr/SKILL.md). Sisa halaman ini teknis dan
+tidak perlu dibaca.
+
+> ⚠️ Salinan paket yang beredar sebelum 10 Agustus 2026 tidak mengirim identitas client,
+> sehingga selalu ditolak `403` di pagar web sebelum key sempat diperiksa. Ambil ulang dari
+> folder di atas dan hapus salinan lama.
+
+**Kalau kamu AI agent:** kontrak lengkap yang bisa
 dibaca mesin ada di [`openapi.json`](openapi.json), sedangkan aturan ringkas untuk agent ada di
 [`agent-guide.json`](agent-guide.json). Contoh request dan response ada di
 [`examples.json`](examples.json).

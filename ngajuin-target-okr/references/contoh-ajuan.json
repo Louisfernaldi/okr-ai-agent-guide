@@ -1,0 +1,24 @@
+{
+  "klaim": "Aku mau bikin daftar pesanan WA otomatis kekumpul di satu papan, biar Rina sama Dwi ga usah nyalin pesanan satu-satu ke Excel tiap pagi.",
+  "jejak": "Papan Pesanan WA (yang bakal aku bikin) plus riwayat chat WA di Fonnte. Dua-duanya nyatet sendiri, aku ga ngetik apa-apa ke situ.",
+  "cara_baca": "Tiap Senin, hitung berapa pesanan WA minggu lalu yang masih disalin manual ke Excel, dibagi jumlah pesanan WA minggu itu. Bukan dibagi total semua pesanan.",
+  "ambang": "20",
+  "satuan": "persen",
+  "jendela_mulai": "2026-08-01",
+  "jendela_selesai": "2026-10-31",
+  "jendela_min_data": "10",
+  "dipakein_siapa": "Rina dan Dwi",
+  "merah_kondisi": "Merah kalau masih di atas 40 persen di akhir Oktober, atau kalau Rina dan Dwi ternyata balik nyalin manual karena papannya kelewat ribet.",
+  "penjaga_nama": "pesanan yang salah masuk ke papan, per minggu, dibaca dari papan yang sama",
+  "penjaga_ambang": "2",
+  "baseline": [
+    { "tanggal_mulai": "2026-06-01", "angka": "78" },
+    { "tanggal_mulai": "2026-06-08", "angka": "74" },
+    { "tanggal_mulai": "2026-06-15", "angka": "69" },
+    { "tanggal_mulai": "2026-06-22", "angka": "81" },
+    { "tanggal_mulai": "2026-06-29", "angka": "66" },
+    { "tanggal_mulai": "2026-07-06", "angka": "70" },
+    { "tanggal_mulai": "2026-07-13", "angka": "72" },
+    { "tanggal_mulai": "2026-07-20", "angka": "58" }
+  ]
+}

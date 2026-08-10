@@ -1,0 +1,170 @@
+# Formulir 8 isian
+
+Isi buat agent waktu mandu Nur, Ida, atau Alda. Tanya **satu isian per giliran**.
+Isian yang kosong bikin pengajuan balik tanpa dinilai, jadi jangan ada yang dilewat.
+
+Nama isian yang dipakai di sini wajib sama persis sama tabel di `SKILL.md` dan sama berkas
+`contoh-ajuan.json`. Tiga berkas itu satu suara. Kalau suatu hari ketiganya beda, itu
+kerusakan yang wajib dilaporin ke Louis, bukan pilihan yang boleh diambil sendiri. Nol
+boleh ngarang nama isian baru.
+
+---
+
+## Lihat contoh jadinya dulu
+
+Bacain ini ke pemakai di awal, sebelum mulai nanya. Orang lebih gampang niru bentuk
+daripada ngerti aturan.
+
+> **1. Klaim.** Aku mau bikin daftar pesanan WA otomatis kekumpul di satu papan, biar Rina
+> sama Dwi ga usah nyalin pesanan satu-satu ke Excel tiap pagi.
+>
+> **2. Jejak.** Papan Pesanan WA (yang bakal aku bikin) plus riwayat chat WA di Fonnte.
+> Dua-duanya nyatet sendiri, aku ga ngetik apa-apa ke situ.
+>
+> **3. Cara baca.** Tiap Senin, hitung berapa pesanan WA minggu lalu yang masih disalin
+> manual ke Excel, dibagi jumlah pesanan WA minggu itu. Bukan dibagi total semua pesanan.
+>
+> **4. Angka sebelum.** 8 minggu terakhir sebelum kuartal mulai, rata-rata 71% pesanan WA
+> disalin manual. Rinciannya per minggu: 78, 74, 69, 81, 66, 70, 72, 58.
+>
+> **5. Ambang.** Turun ke 20% atau lebih rendah.
+>
+> **6. Jendela.** 1 Agustus sampai 31 Oktober. Minggu yang pesanan WA-nya kurang dari 10 ga
+> dihitung, karena datanya kekecilan.
+>
+> **7. Siapa yang dipakein.** Rina dan Dwi. Bukan aku.
+>
+> **8. Kalau gagal, ketahuannya gimana.** Merah kalau masih di atas 40% di akhir Oktober,
+> ATAU kalau Rina dan Dwi ternyata balik nyalin manual karena papannya kelewat ribet. Angka
+> penjaga: pesanan yang salah masuk ke papan tetap 2 atau kurang per minggu, dibaca dari
+> papan yang sama.
+
+Isian nomor 3 dan nomor 8 yang paling nentuin. Nomor 3 yang bikin angkanya bisa dihitung
+ulang orang lain, nomor 8 yang bikin targetnya punya kemungkinan gagal. Tanpa dua itu,
+sisanya cuma niat baik.
+
+---
+
+## 1. Klaim
+
+Satu kalimat bahasa sehari-hari: mau bikin apa, dan hidup siapa yang jadi lebih enak.
+
+- Bener: "Bikin pengecek desain otomatis biar Ida ga usah buka satu-satu berkas customer
+  tiap sore."
+- Salah: "Meningkatkan efisiensi proses desain." Ini kalimat rapat, bukan kalimat kerja.
+
+Dikirim sebagai: `klaim`
+
+## 2. Jejak
+
+Sistem apa yang bakal nyatet ini kejadian. Sebut namanya.
+
+- Bener: "Konsol Revisi", "riwayat chat Shopee", "Jurnal".
+- Salah: "log", "sistem", "datanya ada kok". Nama sistemnya mana?
+
+Dikirim sebagai: `jejak`
+
+## 3. Cara baca
+
+Persisnya gimana angkanya diambil. Tulis sedetail resep masakan, sampai orang lain bisa
+ngikutin dan dapet angka yang sama persis.
+
+- Bener: "Tiap Senin buka Konsol Revisi, filter tanggal minggu lalu, hitung baris yang
+  statusnya REVISI, bagi jumlah total order minggu itu."
+- Salah: "Dilihat dari konsol." Dilihat gimana? Dihitung apanya?
+
+Dikirim sebagai: `cara_baca`
+
+## 4. Angka sebelum
+
+Berapa angkanya SEKARANG, diambil pakai cara baca yang sama persis di isian 3, dari data
+sebelum kuartal mulai. **Wajib pakai rincian per minggu, bukan cuma rata-rata.**
+
+- Bener: "8 minggu terakhir: 78, 74, 69, 81, 66, 70, 72, 58. Rata-rata 71%."
+- Salah: "Sekitar 70an persen." Rata-rata doang ga cukup, alasannya ada di jebakan 1.
+
+Halaman OKR minta **paling sedikit 6 minggu**. Contoh di panduan pakai 8 minggu, dan itu
+lebih aman. Tiap minggu butuh tanggal Seninnya, bukan cuma angkanya.
+
+Dikirim sebagai: `baseline`, berbentuk daftar. Tiap baris punya `tanggal_mulai` (Senin
+minggu itu, format `2026-06-01`) dan `angka` (angka minggu itu).
+
+Semua tanggal di `baseline` wajib SEBELUM `jendela_mulai`. Kalau ada yang di dalam jendela,
+itu bukan "angka sebelum" lagi.
+
+## 5. Ambang
+
+Berapa yang dianggap berhasil. Angka, bukan kata sifat.
+
+- Bener: "Turun ke 20% atau kurang."
+- Salah: "Jauh lebih cepat", "signifikan berkurang".
+
+Dikirim sebagai dua isian: `ambang` (angkanya doang, misal `"20"`) dan `satuan` (misal
+`"persen"`, `"menit"`, `"pesanan"`).
+
+## 6. Jendela
+
+Diukur dari tanggal berapa sampai berapa, dan minimal berapa kali kepakai per minggu supaya
+angkanya sah.
+
+- Bener: "1 Agustus sampai 31 Oktober, minggu dengan data kurang dari 10 ga dihitung."
+- Salah: "Selama kuartal 3." Tanggalnya mana? Batas data minimalnya mana?
+
+Dikirim sebagai tiga isian: `jendela_mulai`, `jendela_selesai` (dua-duanya format
+`2026-08-01`, dibaca sebagai tanggal WIB), dan `jendela_min_data` (angka minimal per minggu).
+
+## 7. Siapa yang dipakein
+
+Nama orang yang bakal make barangmu, dan orang itu **bukan kamu**.
+
+- Bener: "Rina dan Dwi."
+- Salah: "Tim", "semua orang", "aku sendiri dulu nanti baru disebar".
+
+**Agent wajib nolak halus** kalau pemakai nulis namanya sendiri, atau nulis "aku", "saya",
+"diri sendiri", atau nama kelompok yang ga jelas orangnya. Cara nolaknya bukan "ini salah",
+tapi mancing: "kalau barang ini jadi, siapa orang pertama yang kerjaannya berubah? sebut
+namanya." Kalau jawabannya tetap dirinya sendiri, jelasin kenapa: target yang cuma dipakai
+sendiri ga bisa dibuktiin ngebantu siapa-siapa, dan itu bikin ajuannya ketahan.
+
+Dikirim sebagai: `dipakein_siapa`
+
+## 8. Kalau gagal, ketahuannya gimana
+
+Dua hal sekaligus di isian ini.
+
+**(a) Kondisi merah.** Apa yang bikin target ini dinyatakan gagal.
+
+**(b) Angka penjaga.** Satu angka lain yang ga boleh memburuk gara-gara kerjaanmu, plus
+ambangnya berupa angka. Ini yang bikin angka utamamu ga bisa dibeli pakai kerusakan yang
+disembunyiin. Alasan lengkapnya ada di jebakan 5.
+
+- Bener: "Merah kalau masih di atas 40% di akhir Oktober, atau kalau orangnya balik
+  ngerjain manual. Angka penjaga: salah input pesanan tetap 2 atau kurang per minggu."
+- Salah: dikosongin, atau cuma nulis kondisi merah tanpa angka penjaga. Ini isian yang
+  paling sering ilang, dan paling nentuin.
+
+Dikirim sebagai tiga isian: `merah_kondisi` (kalimat kondisi gagalnya), `penjaga_nama`
+(nama angka penjaganya, misal "salah input pesanan per minggu"), dan `penjaga_ambang`
+(batasnya, angka doang, misal `"2"`).
+
+---
+
+## Sesudah dikirim
+
+Pemakai bakal dapet laporan berisi:
+
+1. **Vonis**: LAYAK, LAYAK DENGAN PERBAIKAN, atau BELUM LAYAK
+2. **Tingkat 1, 2, atau 3** kalau layak, plus alasan kenapa bukan tingkat di atas atau di
+   bawahnya. Tingkat itu nentuin skor final kamu di halaman OKR: yang kerepotan cuma kamu
+   sendiri masuk Tingkat 1, orang lain yang kerepotan masuk Tingkat 2, meja Louis atau angka
+   bisnis masuk Tingkat 3. Makin tinggi tingkatnya, makin gede skor finalnya, dan garis
+   finisnya juga makin jauh.
+3. **Hasil 6 jebakan** satu per satu, plus usulan perbaikan yang konkret
+4. **Kalau ditolak**: alasannya, plus 2 sampai 3 target terdekat yang BISA diukur
+5. **Apa yang dicek**: sistem apa yang dibuka, rentang tanggal berapa, data sebanyak apa
+
+Ditolak bukan pintu tutup. Boleh dibenerin dan diajuin ulang **maksimal 2 kali**. Kalau
+ronde ketiga masih mentok, ajuannya naik ke Louis dan dia yang ketok.
+
+Batas 2 kali itu buat vonis BELUM LAYAK dari penilai. Berkas yang salah isi lalu dibalikin
+halaman OKR (kode 400) BUKAN termasuk hitungan itu, itu cuma benerin ketikan.
