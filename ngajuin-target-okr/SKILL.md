@@ -91,7 +91,7 @@ python ~/.claude/skills/ngajuin-target-okr/kirim_ajuan.py --cek-kunci
 ```
 
 Perintah ini nanya ke halaman OKR beneran, bukan cuma ngintip berkas di komputer. Empat
-kemungkinan jawabannya, dan tiga-tiganya beda artinya:
+kemungkinan jawabannya, dan empat-empatnya beda artinya:
 
 - **Kunci hidup** - dia sebutin nama pemilik kuncinya. Cocokin sama nama pemakai. Kalau
   namanya orang lain, STOP, suruh kabarin Louis.
@@ -193,7 +193,7 @@ isinya cerita bohongan buat belajar, bukan punya siapa-siapa.
 
 ## Balikan dan artinya
 
-Lima kemungkinan. Terjemahin ke bahasa sehari-hari, jangan tempel apa adanya.
+Enam kemungkinan. Terjemahin ke bahasa sehari-hari, jangan tempel apa adanya.
 
 **Kesimpen (kode 201).** Ajuan masuk dan dapet nomor. Sebutin nomornya ke pemakai, misal
 "ajuanmu kesimpen, nomornya 12, simpen nomor ini buat nanya perkembangan". Sesudah ini
@@ -215,6 +215,13 @@ pakai alat yang sama, hasilnya bakal sama terus.
 
 **Akun belum kedaftar atau kiriman dobel (kode 409).** Bilang: "namamu belum didaftarin di
 halaman OKR, atau kiriman yang sama masih jalan. Hubungi Louis dulu". Berhenti juga.
+
+**Halaman OKR lagi ngadat (kode 500 ke atas).** Ini SATU-SATUNYA kode yang boleh diulang.
+Halamannya yang lagi sakit, bukan kunci dan bukan isian, dan belum ketahuan ajuannya masuk
+atau nggak. Jangan nebak, jangan ngedit berkas ajuannya, jangan bikin berkas baru. Jalanin
+ulang perintah yang PERSIS SAMA. Nomor kiriman otomatis kepakai lagi, jadi kalaupun tadi
+sebenernya udah masuk, halaman OKR nolak nyimpen dobel. Masih gagal sesudah 2 sampai 3
+kali, berhenti dan kabarin Louis.
 
 **Halamannya belum bisa dibuka (nyambungnya gagal).** Halaman OKR-nya lagi disiapin dan
 belum tentu udah nyala. Kalau nyambungnya gagal, JANGAN tampilin pesan error mentah.

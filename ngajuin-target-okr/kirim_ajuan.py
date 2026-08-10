@@ -408,6 +408,13 @@ def cek_kunci():
         )
         return 3
 
+    if kode >= 500:
+        print(
+            "[HALAMAN OKR LAGI NGADAT] Kode " + str(kode) + ". Ini bukan soal kuncimu.\n"
+            "  Tunggu sebentar terus coba lagi. Masih gagal juga? Kabarin Louis."
+        )
+        return 4
+
     print(
         "[BELUM KEJAWAB] Halaman OKR mbalikin kode " + str(kode) + " yang ga dikenal alat ini.\n"
         "  Kabarin Louis sambil sebutin kode itu."
@@ -531,6 +538,16 @@ def baca_balasan(kode, isi_mentah):
             "  Jangan ngirim ulang berkali-kali. Kabarin Louis dulu."
         )
         return 2
+
+    if kode >= 500:
+        print(
+            "[HALAMAN OKR LAGI NGADAT] Kode " + str(kode) + ". Belum ketahuan ajuanmu masuk atau\n"
+            "  nggak, dan itu WAJAR. Jangan nebak, jangan ngedit berkasnya.\n"
+            "  Jalanin ulang perintah yang PERSIS SAMA. Nomor kirimannya otomatis dipakai lagi,\n"
+            "  jadi kalaupun tadi sebenernya udah masuk, dia ga bakal kesimpen dobel.\n"
+            "  Masih gagal juga sesudah 2-3 kali? Berhenti, kabarin Louis."
+        )
+        return 4
 
     print(
         "[BELUM KEKIRIM] Halaman OKR mbalikin kode " + str(kode) + " yang ga dikenal skill ini.\n"
