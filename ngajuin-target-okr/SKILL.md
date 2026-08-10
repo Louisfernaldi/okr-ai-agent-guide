@@ -92,11 +92,15 @@ sesuai jendela hitam yang kepakai:
 
 Sesudah pindah, semua perintah di bawah ditulis pendek: `python kirim_ajuan.py ...`.
 
-⛔ JANGAN nulis alamatnya pakai tanda `~` di dalam perintah (mis. `python ~/.claude/...`).
-Tanda itu cuma diterjemahin jadi folder rumah di Git Bash. Di PowerShell dan cmd — dua yang
-paling sering kepakai di komputer Windows — dia dianggap nama folder beneran, dan perintahnya
-mentok `No such file or directory`. Alasan yang sama bikin `%USERPROFILE%` NOL boleh dipakai
-di sini: dia cuma hidup di cmd, di PowerShell dan Git Bash dia tetep jadi teks mentah.
+⛔ Aturannya sempit, baca persis: JANGAN pakai `~` atau `%USERPROFILE%` sebagai POTONGAN
+ALAMAT di dalam perintah — mis. `python ~/.claude/skills/.../kirim_ajuan.py` atau
+`cd %USERPROFILE%\.claude\skills\...`. Tiap singkatan itu cuma diterjemahin di satu jenis
+jendela: `~` di Git Bash, `%USERPROFILE%` di cmd. Di jendela lain dia dianggap nama folder
+beneran dan perintahnya mentok `No such file or directory`.
+
+Yang di atas itu BEDA sama tiga perintah pencarian di daftar barusan. Di situ singkatannya
+bukan potongan alamat, dan tiap baris udah dipasangin jendelanya sendiri — jadi aman.
+Ambil jawabannya sekali, terus tulis alamat PENUH di semua perintah sesudah itu.
 
 Kalau `python` ga dikenal komputernya, coba `py` atau `python3`. Kalau tiga-tiganya nol
 jalan, bilang ke pemakai suruh kabarin Louis, jangan diakalin.
