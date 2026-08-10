@@ -77,9 +77,30 @@ catatan. Dia cuma lewat sekali waktu ngirim.
 ## Alur yang agent ikutin
 
 ### Langkah 0. Alamat alatnya
-Alatnya ada di folder skill ini, bukan di folder kerja pemakai, jadi perintahnya selalu
-pakai alamat panjang `~/.claude/skills/ngajuin-target-okr/kirim_ajuan.py`. Tanda `~` di
-situ artinya folder rumah pemakai, yaitu `C:\Users\<nama-kamu>\`.
+Alatnya ada di folder skill ini, bukan di folder kerja pemakai. Jadi PINDAH DULU ke folder
+alatnya, baru jalanin perintahnya:
+
+```bash
+cd C:\Users\<nama-kamu>\.claude\skills\ngajuin-target-okr
+```
+
+Ganti `<nama-kamu>` sama nama folder rumah pemakai. Belum tau isinya apa? Cari sekali,
+sesuai jendela hitam yang kepakai:
+- PowerShell: `echo $env:USERPROFILE`
+- Command Prompt (cmd): `echo %USERPROFILE%`
+- Git Bash: `echo $HOME`
+
+Sesudah pindah, semua perintah di bawah ditulis pendek: `python kirim_ajuan.py ...`.
+
+⛔ Aturannya sempit, baca persis: JANGAN pakai `~` atau `%USERPROFILE%` sebagai POTONGAN
+ALAMAT di dalam perintah — mis. `python ~/.claude/skills/.../kirim_ajuan.py` atau
+`cd %USERPROFILE%\.claude\skills\...`. Tiap singkatan itu cuma diterjemahin di satu jenis
+jendela: `~` di Git Bash, `%USERPROFILE%` di cmd. Di jendela lain dia dianggap nama folder
+beneran dan perintahnya mentok `No such file or directory`.
+
+Yang di atas itu BEDA sama tiga perintah pencarian di daftar barusan. Di situ singkatannya
+bukan potongan alamat, dan tiap baris udah dipasangin jendelanya sendiri — jadi aman.
+Ambil jawabannya sekali, terus tulis alamat PENUH di semua perintah sesudah itu.
 
 Kalau `python` ga dikenal komputernya, coba `py` atau `python3`. Kalau tiga-tiganya nol
 jalan, bilang ke pemakai suruh kabarin Louis, jangan diakalin.
@@ -87,7 +108,7 @@ jalan, bilang ke pemakai suruh kabarin Louis, jangan diakalin.
 ### Langkah 1. Cek kunci dulu
 
 ```bash
-python ~/.claude/skills/ngajuin-target-okr/kirim_ajuan.py --cek-kunci
+python kirim_ajuan.py --cek-kunci
 ```
 
 Perintah ini nanya ke halaman OKR beneran, bukan cuma ngintip berkas di komputer. Empat
@@ -137,7 +158,7 @@ nol boleh nambah atau ngarang nama baru.
 Terus jalanin pemeriksanya:
 
 ```bash
-python ~/.claude/skills/ngajuin-target-okr/kirim_ajuan.py --cek ajuan-nur.json --arah turun --nama-saya Nur
+python kirim_ajuan.py --cek ajuan-nur.json --arah turun --nama-saya Nur
 ```
 
 Pemeriksa ini jalan di komputer sendiri, nol nyentuh internet. Kalau dia nemu yang kurang,
@@ -150,7 +171,7 @@ Terus tanya: "udah pas? kirim sekarang?" Tunggu jawaban jelas.
 Ngirim itu **ga bisa ditarik**. Begitu masuk, penilai lihat. Jadi jangan main kirim duluan.
 
 ```bash
-python ~/.claude/skills/ngajuin-target-okr/kirim_ajuan.py --kirim ajuan-nur.json --arah turun --nama-saya Nur
+python kirim_ajuan.py --kirim ajuan-nur.json --arah turun --nama-saya Nur
 ```
 
 ### Langkah 7. Terjemahin balikannya
