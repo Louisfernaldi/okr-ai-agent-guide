@@ -77,9 +77,26 @@ catatan. Dia cuma lewat sekali waktu ngirim.
 ## Alur yang agent ikutin
 
 ### Langkah 0. Alamat alatnya
-Alatnya ada di folder skill ini, bukan di folder kerja pemakai, jadi perintahnya selalu
-pakai alamat panjang `~/.claude/skills/ngajuin-target-okr/kirim_ajuan.py`. Tanda `~` di
-situ artinya folder rumah pemakai, yaitu `C:\Users\<nama-kamu>\`.
+Alatnya ada di folder skill ini, bukan di folder kerja pemakai. Jadi PINDAH DULU ke folder
+alatnya, baru jalanin perintahnya:
+
+```bash
+cd C:\Users\<nama-kamu>\.claude\skills\ngajuin-target-okr
+```
+
+Ganti `<nama-kamu>` sama nama folder rumah pemakai. Belum tau isinya apa? Cari sekali,
+sesuai jendela hitam yang kepakai:
+- PowerShell: `echo $env:USERPROFILE`
+- Command Prompt (cmd): `echo %USERPROFILE%`
+- Git Bash: `echo $HOME`
+
+Sesudah pindah, semua perintah di bawah ditulis pendek: `python kirim_ajuan.py ...`.
+
+⛔ JANGAN nulis alamatnya pakai tanda `~` di dalam perintah (mis. `python ~/.claude/...`).
+Tanda itu cuma diterjemahin jadi folder rumah di Git Bash. Di PowerShell dan cmd — dua yang
+paling sering kepakai di komputer Windows — dia dianggap nama folder beneran, dan perintahnya
+mentok `No such file or directory`. Alasan yang sama bikin `%USERPROFILE%` NOL boleh dipakai
+di sini: dia cuma hidup di cmd, di PowerShell dan Git Bash dia tetep jadi teks mentah.
 
 Kalau `python` ga dikenal komputernya, coba `py` atau `python3`. Kalau tiga-tiganya nol
 jalan, bilang ke pemakai suruh kabarin Louis, jangan diakalin.
@@ -87,7 +104,7 @@ jalan, bilang ke pemakai suruh kabarin Louis, jangan diakalin.
 ### Langkah 1. Cek kunci dulu
 
 ```bash
-python ~/.claude/skills/ngajuin-target-okr/kirim_ajuan.py --cek-kunci
+python kirim_ajuan.py --cek-kunci
 ```
 
 Perintah ini nanya ke halaman OKR beneran, bukan cuma ngintip berkas di komputer. Empat
@@ -137,7 +154,7 @@ nol boleh nambah atau ngarang nama baru.
 Terus jalanin pemeriksanya:
 
 ```bash
-python ~/.claude/skills/ngajuin-target-okr/kirim_ajuan.py --cek ajuan-nur.json --arah turun --nama-saya Nur
+python kirim_ajuan.py --cek ajuan-nur.json --arah turun --nama-saya Nur
 ```
 
 Pemeriksa ini jalan di komputer sendiri, nol nyentuh internet. Kalau dia nemu yang kurang,
@@ -150,7 +167,7 @@ Terus tanya: "udah pas? kirim sekarang?" Tunggu jawaban jelas.
 Ngirim itu **ga bisa ditarik**. Begitu masuk, penilai lihat. Jadi jangan main kirim duluan.
 
 ```bash
-python ~/.claude/skills/ngajuin-target-okr/kirim_ajuan.py --kirim ajuan-nur.json --arah turun --nama-saya Nur
+python kirim_ajuan.py --kirim ajuan-nur.json --arah turun --nama-saya Nur
 ```
 
 ### Langkah 7. Terjemahin balikannya
