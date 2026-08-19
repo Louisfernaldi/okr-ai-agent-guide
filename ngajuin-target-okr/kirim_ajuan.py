@@ -51,6 +51,11 @@ ISIAN_WAJIB = [
     "penjaga_nama",
     "penjaga_ambang",
 ]
+# Isian per langkah yang dikenal halaman OKR. Selain empat ini dibuang, nol dikirim.
+# `judul` + `kata_kunci` WAJIB, `bobot` + `repo` boleh kosong.
+LANGKAH_ISIAN = ["judul", "bobot", "repo", "kata_kunci"]
+LANGKAH_ISIAN_WAJIB = ["judul", "kata_kunci"]
+
 ISIAN_ANGKA = ["ambang", "jendela_min_data", "penjaga_ambang"]
 ISIAN_TANGGAL = ["jendela_mulai", "jendela_selesai"]
 
@@ -187,12 +192,12 @@ def periksa(data, arah=None, nama_saya=None):
             masalah.append("Isian '" + nama + "' masih kosong.")
 
     # 2. Nol nama isian karangan
-    boleh = set(ISIAN_WAJIB + ["baseline"])
+    boleh = set(ISIAN_WAJIB + ["baseline", "langkah"])
     for nama in data:
         if nama not in boleh:
             masalah.append(
                 "Nama isian '" + nama + "' ga dikenal halaman OKR. "
-                "Yang boleh cuma dua belas isian plus baseline."
+                "Yang boleh cuma dua belas isian plus baseline dan langkah."
             )
 
     # 3. Isian yang harus berupa angka
@@ -295,6 +300,64 @@ def periksa(data, arah=None, nama_saya=None):
                 "dikira-kira, bukan dihitung. Buka data lama, ambil angka tiap minggunya."
             )
 
+    # 6b. Langkah pelaksanaan WAJIB, dan tiap langkah wajib kepakai.
+    #
+    # Halaman OKR nyocokin PR yang kelar ke langkah lewat `kata_kunci` -- langkah tanpa kata
+    # kunci nol pernah kecocok, jadi persen kemajuan pengerjaanmu bakal mentok 0% sepanjang
+    # kuartal walau kerjaanmu jalan. Itu sebabnya kata kunci diperlakuin sama wajibnya kayak
+    # judul, bukan isian tambahan.
+    langkah_mentah = data.get("langkah")
+    if "langkah" not in data:
+        masalah.append(
+            "Isian 'langkah' belum ada di berkas. Wajib minimal satu langkah pelaksanaan: "
+            "pekerjaan nyata yang bakal kamu kerjain buat ngejar targetnya."
+        )
+    elif not isinstance(langkah_mentah, list):
+        masalah.append(
+            "Isian 'langkah' harus berupa daftar (kurung siku berisi langkah), sekarang "
+            "bentuknya beda."
+        )
+    elif not langkah_mentah:
+        masalah.append(
+            "Isian 'langkah' masih kosong. Wajib minimal satu langkah pelaksanaan."
+        )
+    else:
+        for nomor, satu in enumerate(langkah_mentah, start=1):
+            if not isinstance(satu, dict):
+                masalah.append("Langkah ke-" + str(nomor) + " bentuknya bukan isian langkah.")
+                continue
+            for asing in satu:
+                if asing not in LANGKAH_ISIAN:
+                    masalah.append(
+                        "Langkah ke-" + str(nomor) + " punya isian '" + str(asing)
+                        + "' yang ga dikenal halaman OKR. Yang boleh cuma "
+                        + ", ".join(LANGKAH_ISIAN) + "."
+                    )
+            judul_langkah = str(satu.get("judul") or "").strip()
+            # Yang wajib dibaca dari `LANGKAH_ISIAN_WAJIB`, jangan diketik ulang di sini
+            # -- kalau daftarnya berubah tapi pemeriksanya ketinggalan, alat ini bakal
+            # ngelolosin ajuan yang ditolak halaman OKR, dan orangnya baru tau pas kirim.
+            for wajib in LANGKAH_ISIAN_WAJIB:
+                if str(satu.get(wajib) or "").strip():
+                    continue
+                if wajib == "judul":
+                    masalah.append(
+                        "Langkah ke-" + str(nomor) + " belum ada judulnya. Sebut pekerjaannya."
+                    )
+                elif wajib == "kata_kunci":
+                    masalah.append(
+                        "Langkah '" + (judul_langkah or "ke-" + str(nomor)) + "' belum ada "
+                        "kata kuncinya. Kata kunci itu potongan judul PR yang bakal kamu bikin "
+                        "(contoh: 'papan-pesanan'). Tanpa itu PR yang kelar nol pernah kehitung, "
+                        "jadi persen kemajuanmu mentok 0% sampai kuartal habis."
+                    )
+                else:
+                    # Isian wajib baru ditambahin ke daftar tapi belum ada penjelasannya di
+                    # sini. Mending pesan seadanya daripada lolos diam-diam.
+                    masalah.append(
+                        "Langkah ke-" + str(nomor) + " belum ngisi '" + wajib + "', padahal wajib."
+                    )
+
     # 7. Jebakan 1 dan 2, butuh arah
     ambang = ke_angka(data.get("ambang", ""))
     if arah is None:
@@ -334,6 +397,14 @@ def badan_permintaan(data):
         }
         for baris in data.get("baseline", [])
         if isinstance(baris, dict)
+    ]
+    # Langkahnya ikut kekirim. Sebelum tambalan ini `badan_permintaan` cuma mungut
+    # `ISIAN_WAJIB` + `baseline`, jadi langkah yang udah diketik orang DIBUANG diam-diam dan
+    # nol pernah nyampe server -- itu sebabnya ada ajuan yang persennya 0% sepanjang kuartal.
+    badan["langkah"] = [
+        {nama: str(satu.get(nama, "")).strip() for nama in LANGKAH_ISIAN}
+        for satu in data.get("langkah", [])
+        if isinstance(satu, dict)
     ]
     return badan
 

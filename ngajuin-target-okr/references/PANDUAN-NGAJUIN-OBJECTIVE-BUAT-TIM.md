@@ -77,6 +77,60 @@ Salin bagian ini, isi, kirim. **Isian yang kosong bikin pengajuanmu balik tanpa 
 
 ---
 
+## Plus: langkah pelaksanaan (WAJIB, minimal satu)
+
+Delapan isian di atas njelasin **apa yang mau kamu ukur**. Langkah pelaksanaan njelasin
+**pekerjaan apa yang bakal kamu kerjain buat ngejarnya**. Dua-duanya wajib.
+
+Kenapa ini nol boleh dilewat: halaman OKR ngitung dua persen yang beda.
+
+| Yang diitung | Sumbernya |
+|---|---|
+| Kemajuan **dampak** | angkamu gerak dari angka sebelum ke ambang |
+| Kemajuan **pengerjaan** | PR yang kelar, dicocokin ke langkah-langkahmu |
+
+Ajuan tanpa langkah bikin kemajuan pengerjaan **mentok 0% sepanjang kuartal** — bukan karena
+kamu ga kerja, tapi karena nol ada yang bisa dicocokin. Halaman OKR nol bisa nebak sendiri PR
+mana punya siapa.
+
+### Tiap langkah butuh 4 hal
+
+| Isian | Wajib? | Isinya |
+|---|---|---|
+| `judul` | **wajib** | Nama pekerjaannya, bahasa manusia. "Bangun papan pesanan otomatis" |
+| `kata_kunci` | **wajib** | Potongan judul PR yang bakal kamu bikin. `papan-pesanan` |
+| `bobot` | boleh kosong | Angka 1-100, seberapa besar porsinya. Kosong = dibagi rata otomatis |
+| `repo` | boleh kosong | Gudang kode tempat PR-nya bakal mendarat. Kosong = dicari di semua |
+
+### Kata kunci itu bagian yang paling gampang salah
+
+Pencocoknya sederhana: **kata kunci kamu wajib muncul di judul PR-mu.** Bukan mirip, bukan
+sinonim — muncul apa adanya.
+
+- Kata kunci `papan-pesanan` + judul PR "Bangun papan-pesanan tahap 1" → **cocok**
+- Kata kunci `papan-pesanan` + judul PR "Bangun papan pesanan tahap 1" → **nol cocok** (ada
+  spasi, bukan strip)
+- Kata kunci dikosongin → **nol pernah cocok**, persen pengerjaanmu tetap 0%
+
+Dua aturan lagi yang bikin ditolak:
+
+- **Nol boleh dua langkah pakai kata kunci yang sama.** Satu PR bakal kehitung dua kali.
+- **Nol boleh kata kunci yang jadi potongan kata kunci lain.** `papan` dan `papan-pesanan`
+  bentrok: PR "papan-pesanan v1" nyantol ke dua-duanya, dan pencocoknya nyerah tanpa suara.
+  Pakai kata kunci yang panjang dan khas, jangan satu kata umum.
+
+### Contoh jadinya
+
+```json
+"langkah": [
+  { "judul": "Bangun papan pesanan otomatis", "bobot": "60", "repo": "ORGANISASI/REPO-CONTOH", "kata_kunci": "papan-pesanan" },
+  { "judul": "Sambungin papan ke riwayat WA", "bobot": "40", "repo": "ORGANISASI/REPO-CONTOH", "kata_kunci": "sambung-riwayat-wa" }
+]
+```
+
+Belum tau persisnya bakal ngerjain apa? Tulis yang kamu yakin dulu, minimal satu. Langkah bisa
+ditambah belakangan — yang nol bisa dibalikin itu kuartal yang keburu lewat sama persen 0%.
+
 ## 6 jebakan yang paling sering bikin ditolak
 
 Penilai bakal jalanin pengajuanmu lewat 6 pertanyaan ini. Baca dulu sebelum ngisi, biar ga bolak-balik.
