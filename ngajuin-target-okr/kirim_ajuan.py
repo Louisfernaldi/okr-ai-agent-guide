@@ -330,21 +330,33 @@ def periksa(data, arah=None, nama_saya=None):
                 if asing not in LANGKAH_ISIAN:
                     masalah.append(
                         "Langkah ke-" + str(nomor) + " punya isian '" + str(asing)
-                        + "' yang ga dikenal halaman OKR. Yang boleh cuma judul, bobot, "
-                        "repo, kata_kunci."
+                        + "' yang ga dikenal halaman OKR. Yang boleh cuma "
+                        + ", ".join(LANGKAH_ISIAN) + "."
                     )
             judul_langkah = str(satu.get("judul") or "").strip()
-            if not judul_langkah:
-                masalah.append(
-                    "Langkah ke-" + str(nomor) + " belum ada judulnya. Sebut pekerjaannya."
-                )
-            if not str(satu.get("kata_kunci") or "").strip():
-                masalah.append(
-                    "Langkah '" + (judul_langkah or "ke-" + str(nomor)) + "' belum ada "
-                    "kata kuncinya. Kata kunci itu potongan judul PR yang bakal kamu bikin "
-                    "(contoh: 'papan-pesanan'). Tanpa itu PR yang kelar nol pernah kehitung, "
-                    "jadi persen kemajuanmu mentok 0% sampai kuartal habis."
-                )
+            # Yang wajib dibaca dari `LANGKAH_ISIAN_WAJIB`, jangan diketik ulang di sini
+            # -- kalau daftarnya berubah tapi pemeriksanya ketinggalan, alat ini bakal
+            # ngelolosin ajuan yang ditolak halaman OKR, dan orangnya baru tau pas kirim.
+            for wajib in LANGKAH_ISIAN_WAJIB:
+                if str(satu.get(wajib) or "").strip():
+                    continue
+                if wajib == "judul":
+                    masalah.append(
+                        "Langkah ke-" + str(nomor) + " belum ada judulnya. Sebut pekerjaannya."
+                    )
+                elif wajib == "kata_kunci":
+                    masalah.append(
+                        "Langkah '" + (judul_langkah or "ke-" + str(nomor)) + "' belum ada "
+                        "kata kuncinya. Kata kunci itu potongan judul PR yang bakal kamu bikin "
+                        "(contoh: 'papan-pesanan'). Tanpa itu PR yang kelar nol pernah kehitung, "
+                        "jadi persen kemajuanmu mentok 0% sampai kuartal habis."
+                    )
+                else:
+                    # Isian wajib baru ditambahin ke daftar tapi belum ada penjelasannya di
+                    # sini. Mending pesan seadanya daripada lolos diam-diam.
+                    masalah.append(
+                        "Langkah ke-" + str(nomor) + " belum ngisi '" + wajib + "', padahal wajib."
+                    )
 
     # 7. Jebakan 1 dan 2, butuh arah
     ambang = ke_angka(data.get("ambang", ""))
