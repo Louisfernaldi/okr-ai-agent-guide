@@ -101,7 +101,7 @@
       },
       "ProposalStep": {
         "type": "object",
-        "required": ["judul"],
+        "required": ["judul", "kata_kunci"],
         "properties": {
           "judul": {"type": "string"},
           "bobot": {"type": "string", "pattern": "^$|^[+]?(100(\\.0*)?|([1-9][0-9]?)(\\.[0-9]+)?)$"},
@@ -112,7 +112,7 @@
       },
       "Proposal": {
         "type": "object",
-        "required": ["klaim", "jejak", "cara_baca", "ambang", "satuan", "jendela_mulai", "jendela_selesai", "jendela_min_data", "dipakein_siapa", "merah_kondisi", "penjaga_nama", "penjaga_ambang", "baseline"],
+        "required": ["klaim", "jejak", "cara_baca", "ambang", "satuan", "jendela_mulai", "jendela_selesai", "jendela_min_data", "dipakein_siapa", "merah_kondisi", "penjaga_nama", "penjaga_ambang", "baseline", "langkah"],
         "properties": {
           "klaim": {"type": "string", "minLength": 40},
           "jejak": {"type": "string"},
@@ -127,7 +127,7 @@
           "penjaga_nama": {"type": "string"},
           "penjaga_ambang": {"type": "string", "pattern": "^[+-]?([0-9]+(\\.[0-9]*)?|\\.[0-9]+)$"},
           "baseline": {"type": "array", "minItems": 6, "maxItems": 60, "items": {"$ref": "#/components/schemas/Baseline"}},
-          "langkah": {"type": "array", "maxItems": 50, "items": {"$ref": "#/components/schemas/ProposalStep"}}
+          "langkah": {"type": "array", "minItems": 1, "maxItems": 50, "items": {"$ref": "#/components/schemas/ProposalStep"}, "description": "WAJIB minimal satu. Tiap langkah wajib punya judul dan kata_kunci. kata_kunci dipakai buat nyocokin judul PR yang kelar ke langkah ini — langkah tanpa kata_kunci nol pernah kecocok, jadi persen kemajuan pengerjaan mentok 0% sepanjang kuartal."}
         },
         "additionalProperties": false
       },

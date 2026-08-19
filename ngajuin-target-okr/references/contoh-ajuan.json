@@ -20,5 +20,9 @@
     { "tanggal_mulai": "2026-07-06", "angka": "70" },
     { "tanggal_mulai": "2026-07-13", "angka": "72" },
     { "tanggal_mulai": "2026-07-20", "angka": "58" }
+  ],
+  "langkah": [
+    { "judul": "Bangun papan pesanan otomatis", "bobot": "60", "repo": "ORGANISASI/REPO-CONTOH", "kata_kunci": "papan-pesanan" },
+    { "judul": "Sambungin papan ke riwayat WA", "bobot": "40", "repo": "ORGANISASI/REPO-CONTOH", "kata_kunci": "sambung-riwayat-wa" }
   ]
 }

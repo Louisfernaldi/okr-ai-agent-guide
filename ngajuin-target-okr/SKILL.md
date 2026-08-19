@@ -145,6 +145,35 @@ Contoh: "persen pesanan yang disalin manual" bagusnya turun. "Jumlah desain yang
 sekali jadi" bagusnya naik. Jawaban ini nentuin isian 4 dan 5 masuk akal apa nggak. Agent
 JANGAN nebak sendiri arahnya, tanya orangnya.
 
+### Langkah 3b. Tanya langkah pelaksanaannya (WAJIB, jangan dilewat)
+Delapan isian di atas njelasin apa yang mau DIUKUR. Bagian ini njelasin pekerjaan apa yang
+bakal DIKERJAIN. Halaman OKR ngitung dua persen yang beda, dan yang kedua cuma bisa jalan
+kalau bagian ini keisi:
+
+| Yang diitung | Sumbernya |
+|---|---|
+| Kemajuan dampak | angkanya gerak dari angka sebelum ke ambang |
+| Kemajuan pengerjaan | PR yang kelar, dicocokin ke langkah lewat `kata_kunci` |
+
+**Ajuan tanpa langkah bikin kemajuan pengerjaan mentok 0% sepanjang kuartal** — bukan karena
+orangnya ga kerja, tapi karena nol ada yang bisa dicocokin.
+
+Tanya dua hal per langkah, minimal satu langkah:
+
+1. "Pekerjaan apa aja yang bakal kamu kerjain buat ngejar ini?" -> jadi `judul`
+2. "Nanti judul PR-nya kira-kira ada kata apa?" -> jadi `kata_kunci`
+
+Pencocoknya harfiah: **kata kunci wajib muncul apa adanya di judul PR.** `papan-pesanan` nol
+cocok sama judul "papan pesanan" (spasi vs strip). Agent JANGAN ngarang kata kunci sendiri —
+tanya orangnya, terus bacain balik contoh judul PR yang bakal cocok, biar dia bisa mbantah
+sebelum kekirim.
+
+Dua aturan yang bikin server nolak: nol boleh dua langkah pakai kata kunci yang sama, dan nol
+boleh satu kata kunci jadi potongan kata kunci lain (`papan` vs `papan-pesanan` bentrok).
+
+`bobot` dan `repo` boleh kosong. Bobot kosong = dibagi rata otomatis. Detailnya di
+`references/formulir-8-isian.md` bagian "Plus: langkah pelaksanaan".
+
 ### Langkah 4. Cegat 6 jebakan
 Buka `references/6-jebakan.md`. Lewatin ajuan itu ke enam pertanyaannya SEBELUM dikirim.
 Ini bagian paling penting dari skill ini. Server juga ngecek, tapi kalau nunggu ditolak
@@ -165,7 +194,8 @@ Pemeriksa ini jalan di komputer sendiri, nol nyentuh internet. Kalau dia nemu ya
 benerin dulu bareng pemakai, ulangi sampai bersih.
 
 ### Langkah 6. Bacain ulang, minta izin, baru kirim
-Tampilkan ringkasan delapan isian pakai bahasa sehari-hari, bukan tampilan berkas mentah.
+Tampilkan ringkasan delapan isian PLUS langkah pelaksanaannya pakai bahasa sehari-hari,
+bukan tampilan berkas mentah. Langkahnya ikut dibacain: judul + kata kuncinya.
 Terus tanya: "udah pas? kirim sekarang?" Tunggu jawaban jelas.
 
 Ngirim itu **ga bisa ditarik**. Begitu masuk, penilai lihat. Jadi jangan main kirim duluan.
@@ -194,6 +224,7 @@ halaman OKR. Yang bikin jumlahnya beda: isian 5, 6, dan 8 pecah jadi beberapa ba
 | 6. Jendela | `jendela_mulai` + `jendela_selesai` + `jendela_min_data` |
 | 7. Siapa yang dipakein | `dipakein_siapa` |
 | 8. Kalau gagal ketahuannya gimana | `merah_kondisi` + `penjaga_nama` + `penjaga_ambang` |
+| **Plus: langkah pelaksanaan (wajib)** | `langkah`, daftar berisi `judul` + `kata_kunci` (wajib) dan `bobot` + `repo` (boleh kosong) |
 
 Aturan nulisnya:
 - **Semua isian ditulis sebagai teks**, termasuk yang isinya angka. `"ambang": "20"`, bukan
@@ -260,7 +291,7 @@ tunjukin di mana berkasnya disimpan.
   OKR tau kiriman ulang bukan ajuan baru. JANGAN hapus berkas pendamping itu, dan jangan
   bikin salinan berkas ajuan buat ngirim ulang.
 - **Nol kunci nempel di berkas skill.** Kunci cuma dari `OKR_KUNCI` atau `okr-kunci.txt`.
-- **Nol nama isian karangan.** Cuma dua belas nama plus `baseline` yang ada di tabel atas.
+- **Nol nama isian karangan.** Cuma dua belas nama plus `baseline` dan `langkah` yang ada di tabel atas.
 - **Nol ngisiin jawaban pemakai.** Agent boleh mancing, mantulin, ngasih contoh. Agent
   JANGAN ngarang angka isian 4, ngarang nama sistem di isian 2, atau ngarang nama orang di
   isian 7. Yang dinilai kerjaan pemakai, bukan kerjaan agent.
