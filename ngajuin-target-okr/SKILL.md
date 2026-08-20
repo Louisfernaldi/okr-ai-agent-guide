@@ -207,6 +207,46 @@ python kirim_ajuan.py --kirim ajuan-nur.json --arah turun --nama-saya Nur
 ### Langkah 7. Terjemahin balikannya
 Lihat bagian "Balikan dan artinya" di bawah. Jangan nempel balasan mentah ke pemakai.
 
+### Langkah 8. Sesudah ajuan masuk: nyantolin PR ke langkah
+
+Ajuan yang kesimpen belum ngasih persen apa-apa. Persen kemajuan naik cuma kalau PR yang
+kamu bikin **kesambung ke salah satu langkah** di ajuanmu. Nyambungnya lewat JUDUL PR, dan
+ada dua jalan.
+
+**Jalan pintas yang dipakai duluan: tempel `[okr: <nomor langkah>]` di judul PR.**
+
+```
+[okr: 12] Rapiin papan protes di Konsol Revisi
+```
+
+- Nomornya = `id` langkah punyamu, ambil dari `GET /api/okr/saya` (tiap butir di daftar
+  `langkah` bawa `id`-nya sendiri). Bukan nomor ajuan, bukan nomor urut di formulir.
+- Bentuk yang dikenal: `[okr: 12]`, `[okr:12]`, `[OKR: 12]` — besar-kecil huruf bebas, spasi
+  di dalam kurung bebas.
+- Bentuk yang **NOL dikenal**: `[okr-12]`, `[okr 12]`, `(okr: 12)`, `[okr: #12]`. Titik dua
+  itu wajib, dan kurungnya wajib kurung siku.
+- Boleh ditaruh di depan atau di belakang judul, asal masih di judul PR — bukan di badan PR,
+  bukan di nama cabang, bukan di pesan commit.
+
+**Jalan cadangan kalau labelnya nol dipasang: kata kunci.** Sistemnya bakal nyari teks
+`kata_kunci` langkahmu di dalam judul PR, apa adanya. Ini yang sering **gagal senyap**:
+kata kunci biasanya ditulis pakai strip (`papan-pesanan-otomatis`) sedangkan judul PR ditulis
+kalimat biasa pakai spasi ("Papan pesanan otomatis"). Dua-duanya kelihatan sama di mata
+orang, tapi buat mesin nol nyambung — PR-nya kelar, persennya tetap 0%, dan **nol ada pesan
+error sama sekali**.
+
+**Yang wajib agent kasih tau ke pemakai, dua hal:**
+
+1. Label yang salah bentuk, atau nomor langkah punya orang lain, **nol bikin error**. Dia
+   diam-diam jatuh ke jalan cadangan kata kunci — jadi "PR-nya nol ketolak" BUKAN bukti
+   labelnya kebaca.
+2. Kalau langkahnya diisi `repo`, PR-nya wajib di repo itu juga. Beda repo = nol nyantol,
+   walau kata kuncinya cocok.
+
+Saran paling aman: pas ngerakit ajuan, bikin `kata_kunci` yang bakal kepakai apa adanya di
+judul PR (satu-dua kata biasa, tanpa strip), DAN tetap pasang label `[okr: <nomor>]` tiap
+bikin PR. Dua-duanya nyala = nol gantung di satu jalur.
+
 ---
 
 ## Peta isian ke nama yang dikirim
