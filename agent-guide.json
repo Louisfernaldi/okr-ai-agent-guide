@@ -1,6 +1,6 @@
 {
   "name": "OKR TumblerYuk AI Agent Guide",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "language": "id-ID",
   "base_url": "https://okr.tumbleryukoperasional.shop",
   "openapi": "./openapi.json",
@@ -49,5 +49,27 @@
     "open_or_automate_admin_console",
     "submit_without_current_owner_approval",
     "expose_phone_number_or_secret"
-  ]
+  ],
+  "pr_linking": {
+    "why": "kemajuan_pengerjaan hanya bergerak untuk langkah yang punya PR tersambung",
+    "primary": {
+      "where": "pull_request_title",
+      "format": "[okr: <langkah_id>]",
+      "langkah_id_source": "GET /api/okr/saya -> ajuan[].langkah[].id",
+      "accepted_examples": ["[okr: 12]", "[okr:12]", "[OKR: 12]"],
+      "rejected_examples": ["[okr-12]", "[okr 12]", "(okr: 12)", "[okr: #12]"],
+      "case_sensitive": false,
+      "read_from_branch_name_or_commit_message": false
+    },
+    "fallback": {
+      "how": "substring_match_of_langkah_kata_kunci_in_pull_request_title",
+      "silent_failure": true,
+      "known_trap": "kata_kunci ditulis pakai strip (papan-pesanan-otomatis) tapi judul PR pakai spasi -> nol nyantol, nol error",
+      "repo_must_match_when_langkah_repo_is_set": true
+    },
+    "agent_must_tell_owner": [
+      "label salah bentuk atau nunjuk langkah orang lain nol bikin error, dia jatuh senyap ke kata kunci",
+      "PR yang nol ditolak BUKAN bukti labelnya kebaca"
+    ]
+  }
 }

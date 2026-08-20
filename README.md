@@ -90,6 +90,41 @@ Contoh response ditolak aman:
 Bentuk lengkap response baca—termasuk `ajuan`, `langkah`, dan `pr`—ada di `examples.json` agar
 agent tidak menebak struktur data.
 
+## Menyambungkan PR ke langkah
+
+Pengajuan yang tersimpan belum menaikkan persen apa pun. Persen kemajuan bergerak hanya bila
+pull request yang dibuat pemilik key **tersambung ke salah satu langkah** di pengajuannya, dan
+penyambungnya adalah **judul PR**.
+
+Cara utama, tempelkan label ini di judul PR:
+
+```
+[okr: 12] Rapikan papan protes di Konsol Revisi
+```
+
+- Angkanya adalah `id` langkah milik sendiri, dibaca dari `GET /api/okr/saya`; setiap butir
+  pada daftar `langkah` membawa `id`-nya. Bukan `ajuan_id`, bukan nomor urut formulir.
+- Bentuk yang dikenali: `[okr: 12]`, `[okr:12]`, `[OKR: 12]`. Besar-kecil huruf bebas, spasi di
+  dalam kurung bebas.
+- Bentuk yang **tidak** dikenali: `[okr-12]`, `[okr 12]`, `(okr: 12)`, `[okr: #12]`.
+- Label harus berada di judul PR. Nama cabang dan pesan commit tidak dibaca.
+
+Bila label tidak dipasang, penyambungan jatuh ke cadangan: teks `kata_kunci` langkah dicari
+apa adanya di dalam judul PR. Cadangan ini **gagal tanpa suara** ketika kata kunci ditulis
+memakai strip (`papan-pesanan-otomatis`) sedangkan judul PR ditulis sebagai kalimat biasa.
+Pekerjaan selesai, persen tetap 0%, dan tidak ada pesan kesalahan yang muncul di mana pun.
+
+Dua hal yang wajib agent sampaikan kepada pemilik key:
+
+1. Label yang salah bentuk, atau menunjuk langkah milik orang lain, **tidak menghasilkan
+   error**. Ia diam-diam jatuh ke pencocokan kata kunci. Jadi "PR tidak ditolak" bukan bukti
+   bahwa labelnya terbaca.
+2. Bila langkah mengisi `repo`, PR harus berada di repo yang sama. Repo berbeda tidak
+   tersambung meski kata kuncinya cocok.
+
+Saran paling aman: isi `kata_kunci` dengan kata yang memang akan muncul apa adanya di judul PR,
+**dan** tetap pasang label `[okr: <nomor>]` setiap membuat PR.
+
 ## Aturan wajib untuk AI agent
 
 1. Mulai dengan `GET /api/okr/saya` untuk memastikan key terhubung ke nama yang benar. Tampilkan
